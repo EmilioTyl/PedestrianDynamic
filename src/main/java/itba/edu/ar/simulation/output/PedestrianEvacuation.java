@@ -8,7 +8,6 @@ import java.nio.file.StandardOpenOption;
 import java.util.LinkedList;
 import java.util.List;
 
-import itba.edu.ar.cellIndexMethod.data.particle.FloatPoint;
 import itba.edu.ar.cellIndexMethod.data.particle.Particle;
 import itba.edu.ar.simulation.SimulationObserver;
 
@@ -21,21 +20,21 @@ public class PedestrianEvacuation implements SimulationObserver{
 	private int frame = 0;
 	private int previusAmount = 0; 
 	private int evaluationFrame = 0;
-	FloatPoint destination = null;
+	private double destinationY;
 
 	
-	public PedestrianEvacuation(String path, String tag, int totalParticles,int evaluationFrame, FloatPoint destination) throws IOException {
+	public PedestrianEvacuation(String path, String tag, int totalParticles,int evaluationFrame, double destinationY) throws IOException {
 		this.path = path;
 		this.tag=tag;
 		this.evaluationFrame = evaluationFrame;
 		this.previusAmount = totalParticles;
-		this.destination = destination;
+		this.destinationY=destinationY;
 		
 		Files.write(Paths.get(path + _FILENAME_+tag+".csv"), new LinkedList<String>(),
 				Charset.forName("UTF-8"), StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
 	}
 	
-	public void simulationEnded(double time) throws IOException {
+	public void simulationEnded() throws IOException {
 		
 		
 		
@@ -71,6 +70,6 @@ public class PedestrianEvacuation implements SimulationObserver{
 	}
 	
 	private boolean isInsideRoom(Particle particle){
-		return particle.getPosition().getY() > destination.getY();
+		return particle.getPosition().getY() > destinationY;
 	}
 }
