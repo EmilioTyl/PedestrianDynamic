@@ -54,7 +54,7 @@ public class PedestrianSimulation {
 		walls.add(new Wall(new FloatPoint(width - bottomLength, destinationY), new FloatPoint(width, destinationY)));
 
 		this.destinationLowerLimitX = bottomLength;
-		this.destinationUpperLimitX = width - bottomLength;
+		this.destinationUpperLimitX = bottomLength + diameter;
 		this.destinationY = destinationY;
 		this.pedestrianData = new PedestrianData(totalParticles, mass, length, destinationY, width,lowerRadio,upperRadio);
 		datas.add(pedestrianData);
@@ -76,6 +76,7 @@ public class PedestrianSimulation {
 		List<Particle> particles = indexMatrix.getParticles();
 		
 		double time = 0;
+
 		while (particles.size() > 0) {
 			time += deltaTime;
 
@@ -137,9 +138,10 @@ public class PedestrianSimulation {
 		for (Particle particle : particles) {
 			FloatPoint totalForce = getDesiredForce(particle);
 			for (Particle neighbour : particles) {
-
 				if (!neighbour.equals(particle)) {
+					
 					Double overlap = getOverlap(particle, neighbour);
+					
 
 					FloatPoint normalVersor = getNormalVersor(particle, neighbour);
 					FloatPoint tangencialVersor = normalVersor.rotateRadiants(Math.PI / 2);
@@ -169,10 +171,10 @@ public class PedestrianSimulation {
 	private double getDestinationX(Particle particle) {
 		Double x = particle.getPosition().getX();
 
-		if (x <= destinationLowerLimitX + pedestrianData.getMaxRadio() ) {
-			return destinationLowerLimitX;
-		} else if (x >= destinationUpperLimitX - pedestrianData.getMaxRadio()) {
-			return destinationUpperLimitX;
+		if (x <= destinationLowerLimitX + 2*pedestrianData.getMaxRadio() ) {
+			return destinationLowerLimitX + 2*pedestrianData.getMaxRadio();
+		} else if (x >= destinationUpperLimitX - 2*pedestrianData.getMaxRadio()) {
+			return destinationUpperLimitX- 2*pedestrianData.getMaxRadio();
 		} else {
 			return x;
 		}

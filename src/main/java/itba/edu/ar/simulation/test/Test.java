@@ -15,7 +15,7 @@ public class Test {
 
 	private static final int printAfterNFrames = 200;
 	private static final double length = 25;
-	private static final double[] desiredVelocities = { 2 };
+	private static final double[] desiredVelocities = { 1};
 	private static final double width = 20;
 	private static final double destinationY = 5;
 	private static final double destinationDiameter = 1.2;
@@ -24,11 +24,10 @@ public class Test {
 	private static final double deltaTime = Math.pow(10, -3);
 	private static final double finalTime = 300;
 
-	private static final int totalParticles = 100;
+	private static final int totalParticles = 10;
 	private static final int evaluationFrame = 1000;
-	private static int deltaFrames;
 	private static int windowSize;
-	private static int testQuantity = 3;
+	private static int testQuantity = 1;
 	private static double lowerRadio = 0.25;
 	private static double upperRadio = 0.35;
 
@@ -46,7 +45,7 @@ public class Test {
 				PedestrianEvacuation pe = new PedestrianEvacuation(path, tag, totalParticles, evaluationFrame,
 						destinationY);
 				PedestrianFlow pf = new PedestrianFlow(path, tag, totalParticles, evaluationFrame, destinationY);
-				PedestrianFlowUsingWindow pfuw = new PedestrianFlowUsingWindow(windowSize, deltaFrames, destinationY,
+				PedestrianFlowUsingWindow pfuw = new PedestrianFlowUsingWindow(windowSize, evaluationFrame, destinationY,
 						deltaTime, path, tag);
 
 				simulation.subscribe(gsp);
