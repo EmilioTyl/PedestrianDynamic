@@ -15,7 +15,7 @@ public class Test {
 
 	private static final int printAfterNFrames = 200;
 	private static final double length = 25;
-	private static final double[] desiredVelocities = { 1};
+	private static final double[] desiredVelocities = {1};
 	private static final double width = 20;
 	private static final double destinationY = 5;
 	private static final double destinationDiameter = 1.2;

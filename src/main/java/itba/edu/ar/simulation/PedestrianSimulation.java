@@ -32,6 +32,7 @@ public class PedestrianSimulation {
 	private static final double A_CONSTANT = 2 * Math.pow(10, 3);
 	private static final double B_CONSTANT = 0.08;
 	private static final double T_CONSTANT = 0.5;
+	private static final double OFFSET = 2.5;
 
 	private double destinationLowerLimitX;
 	private double destinationUpperLimitX;
@@ -124,7 +125,7 @@ public class PedestrianSimulation {
 	}
 
 	private boolean evacuated(FloatPoint position) {
-		return position.getY() <= destinationY;
+		return position.getY() <= (destinationY - OFFSET);
 	}
 
 	private boolean outOfBorders(FloatPoint position) {
@@ -160,12 +161,20 @@ public class PedestrianSimulation {
 	}
 
 	private FloatPoint getDesiredForce(Particle particle) {
-		FloatPoint destination = new FloatPoint(getDestinationX(particle), destinationY);
+		double dest = getDestX(particle);
+		FloatPoint destination = new FloatPoint(getDestinationX(particle), dest);
 
 		FloatPoint desiredVersor = destination.minus(particle.getPosition());
 		FloatPoint desiredForce = desiredVersor.multiply(desiredVelocity).minus(particle.getVelocity())
 				.multiply(particle.getMass() / T_CONSTANT);
 		return desiredForce;
+	}
+	
+	private double getDestX(Particle particle){
+		double res= destinationY;
+		if( particle.getPosition().getY() <= destinationY)
+			res -= OFFSET;
+		return res;
 	}
 
 	private double getDestinationX(Particle particle) {
