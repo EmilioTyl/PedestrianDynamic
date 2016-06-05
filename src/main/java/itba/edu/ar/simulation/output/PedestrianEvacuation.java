@@ -18,7 +18,8 @@ public class PedestrianEvacuation implements SimulationObserver{
 	private String path;
 	private String tag;
 	private int frame = 0;
-	private int previusAmount = 0; 
+	private int previusAmount = 0;
+	private int evacuated = 0;
 	private int evaluationFrame = 0;
 	private double destinationY;
 
@@ -48,7 +49,8 @@ public class PedestrianEvacuation implements SimulationObserver{
 
 		StringBuilder sb = new StringBuilder();
 		int personsInside = personsInsideRoom(particles);
-		sb.append(time).append(_SEPARATOR_).append(previusAmount - personsInside);
+		evacuated += (previusAmount - personsInside);
+		sb.append(time).append(_SEPARATOR_).append(evacuated);
 		previusAmount = personsInside;
 		
 		fileContent.add(sb.toString());

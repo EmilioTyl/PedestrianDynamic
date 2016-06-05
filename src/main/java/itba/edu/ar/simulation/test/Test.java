@@ -13,7 +13,7 @@ import itba.edu.ar.ss.algorithm.impl.Verlet;
 
 public class Test {
 
-	private static final int printAfterNFrames = 200;
+	private static final int printAfterNFrames = 2000;
 	private static final double length = 25;
 	private static final double[] desiredVelocities = {1};
 	private static final double width = 20;
@@ -21,11 +21,11 @@ public class Test {
 	private static final double destinationDiameter = 1.2;
 	private static final double mass = 80;
 	private static final String path = System.getProperty("user.dir") + "/simulation/";
-	private static final double deltaTime = Math.pow(10, -3);
+	private static final double deltaTime = Math.pow(10, -4);
 	private static final double finalTime = 300;
 
-	private static final int totalParticles = 10;
-	private static final int evaluationFrame = 1000;
+	private static final int totalParticles = 100;
+	private static final int evaluationFrame = 500;
 	private static int windowSize;
 	private static int testQuantity = 1;
 	private static double lowerRadio = 0.25;
