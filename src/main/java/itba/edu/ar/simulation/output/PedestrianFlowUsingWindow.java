@@ -14,7 +14,7 @@ import itba.edu.ar.simulation.SimulationObserver;
 public class PedestrianFlowUsingWindow implements SimulationObserver {
 
 	private int windowSize;
-	private int deltaFrames;
+	private int stepWindow;
 	private List<Integer> pedestriansInRoom = new ArrayList<Integer>();
 	private int frame = 0;
 	private double destinationY;
@@ -24,11 +24,11 @@ public class PedestrianFlowUsingWindow implements SimulationObserver {
 	private static String _FILENAME_ = "PedestrianFlowUsingWindow_";
 	private String tag;
 
-	public PedestrianFlowUsingWindow(int windowSize, int deltaFrames, double destinationY, double deltaTime,
+	public PedestrianFlowUsingWindow(int windowSize, int stepWindow, double destinationY, double deltaTime,
 			String path, String tag) {
 		super();
 		this.windowSize = windowSize;
-		this.deltaFrames = deltaFrames;
+		this.stepWindow = stepWindow;
 		this.destinationY = destinationY;
 		this.deltaTime = deltaTime;
 		this.path = path;
@@ -36,7 +36,7 @@ public class PedestrianFlowUsingWindow implements SimulationObserver {
 	}
 
 	public void stepEnded(List<Particle> particles, double time) throws IOException {
-		if (frame++ % deltaFrames != 0)
+		if (frame++ % stepWindow != 0)
 			return;
 
 		pedestriansInRoom.add(personsInsideRoom(particles));
@@ -46,12 +46,12 @@ public class PedestrianFlowUsingWindow implements SimulationObserver {
 	public void simulationEnded() throws IOException {
 
 		List<String> fileContent = new ArrayList<String>();
-
-		for (int frame = 0; frame + windowSize < pedestriansInRoom.size(); frame++) {
+		int offset = windowSize / stepWindow;
+		for (int index = offset; index < pedestriansInRoom.size(); index++) {
 			StringBuilder sb = new StringBuilder();
-			double pedestriansThatLeftTheRoom = pedestriansInRoom.get(frame + windowSize)
-					- pedestriansInRoom.get(frame);
-			sb.append(frame * deltaTime).append(_SEPARATOR_).append(pedestriansThatLeftTheRoom);
+			
+			double pedestriansThatLeftTheRoom = (pedestriansInRoom.get(index-offset) - pedestriansInRoom.get(index))/(windowSize*deltaTime);
+			sb.append(index*stepWindow* deltaTime).append(_SEPARATOR_).append(pedestriansThatLeftTheRoom);
 			fileContent.add(sb.toString());
 		}
 

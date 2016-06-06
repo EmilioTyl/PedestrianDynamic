@@ -36,7 +36,6 @@ public class PedestrianFlow implements SimulationObserver {
 	}
 
 	public void simulationEnded() throws IOException{
-		//writeFlow(0, time);
 		
 	}
 
@@ -54,6 +53,8 @@ public class PedestrianFlow implements SimulationObserver {
 		double deltaTime = time - previousTime;
 		Double flow = (previusAmount - personsinside)/deltaTime;
 		sb.append(time).append(_SEPARATOR_).append(flow);
+		previusAmount =  personsinside;
+		previousTime = time;
 		fileContent.add(sb.toString());
 		Files.write(Paths.get(path + _FILENAME_+tag+".csv"), fileContent, Charset.forName("UTF-8"),
 				StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.APPEND);

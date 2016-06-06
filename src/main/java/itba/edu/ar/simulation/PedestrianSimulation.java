@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.management.DescriptorRead;
+
 import itba.edu.ar.cellIndexMethod.IndexMatrix;
 import itba.edu.ar.cellIndexMethod.IndexMatrixBuilder;
 import itba.edu.ar.cellIndexMethod.data.particle.FloatPoint;
@@ -29,7 +31,7 @@ public class PedestrianSimulation {
 	private List<SimulationObserver> subscribers = new LinkedList<SimulationObserver>();
 	private double desiredVelocity = 0;
 	private static final double NORMAL_CONSTANT = 1.2 * Math.pow(10, 5);
-	private static final double A_CONSTANT = 2 * Math.pow(10, 3);
+	private static final double A_CONSTANT = 2000;
 	private static final double B_CONSTANT = 0.08;
 	private static final double T_CONSTANT = 0.5;
 
@@ -137,6 +139,7 @@ public class PedestrianSimulation {
 
 		for (Particle particle : particles) {
 			FloatPoint totalForce = getDesiredForce(particle);
+			
 			for (Particle neighbour : particles) {
 				if (!neighbour.equals(particle)) {
 					
@@ -160,14 +163,14 @@ public class PedestrianSimulation {
 	}
 
 	private FloatPoint getDesiredForce(Particle particle) {
-		FloatPoint destination = new FloatPoint(getDestinationX(particle), destinationY);
-
+		FloatPoint destination = new FloatPoint(getDestinationX(particle), destinationY);	
 		FloatPoint desiredVersor = destination.minus(particle.getPosition());
+		desiredVersor = desiredVersor.divide(desiredVersor.abs());
 		FloatPoint desiredForce = desiredVersor.multiply(desiredVelocity).minus(particle.getVelocity())
 				.multiply(particle.getMass() / T_CONSTANT);
 		return desiredForce;
 	}
-
+	
 	private double getDestinationX(Particle particle) {
 		Double x = particle.getPosition().getX();
 
@@ -185,6 +188,7 @@ public class PedestrianSimulation {
 
 		FloatPoint socialRepulsion = normalVersor.multiply((-1) * A_CONSTANT * Math.exp(overlap / B_CONSTANT));
 		FloatPoint force = socialRepulsion;
+		
 		if (overlap >= 0) {
 			FloatPoint normalForce = normalVersor.multiply(-1 * getConstantNormal() * overlap);
 			FloatPoint tangencialForce = tangencialVersor

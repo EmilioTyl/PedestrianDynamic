@@ -18,25 +18,34 @@ public class PedestrianEvacuation implements SimulationObserver{
 	private String path;
 	private String tag;
 	private int frame = 0;
-	private int previusAmount = 0; 
+	private int previusAmount = 0;
+	private int evacuated = 0;
 	private int evaluationFrame = 0;
 	private double destinationY;
+	private int total = 0;
+	private double deltaTime = 0;
 
 	
-	public PedestrianEvacuation(String path, String tag, int totalParticles,int evaluationFrame, double destinationY) throws IOException {
+	public PedestrianEvacuation(String path, String tag, int totalParticles,int evaluationFrame, double destinationY,double deltaTime) throws IOException {
 		this.path = path;
 		this.tag=tag;
 		this.evaluationFrame = evaluationFrame;
 		this.previusAmount = totalParticles;
 		this.destinationY=destinationY;
+		this.total = totalParticles;
+		this.deltaTime = deltaTime;
 		
 		Files.write(Paths.get(path + _FILENAME_+tag+".csv"), new LinkedList<String>(),
 				Charset.forName("UTF-8"), StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
 	}
 	
 	public void simulationEnded() throws IOException {
-		
-		
+		StringBuilder sb = new StringBuilder();
+		sb.append(frame*deltaTime).append(_SEPARATOR_).append(total);
+		fileContent.add(sb.toString());
+		Files.write(Paths.get(path + _FILENAME_+tag+".csv"), fileContent, Charset.forName("UTF-8"),
+				StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.APPEND);
+		fileContent.clear();
 		
 		
 	}
@@ -48,7 +57,8 @@ public class PedestrianEvacuation implements SimulationObserver{
 
 		StringBuilder sb = new StringBuilder();
 		int personsInside = personsInsideRoom(particles);
-		sb.append(time).append(_SEPARATOR_).append(previusAmount - personsInside);
+		evacuated += (previusAmount - personsInside);
+		sb.append(time).append(_SEPARATOR_).append(evacuated);
 		previusAmount = personsInside;
 		
 		fileContent.add(sb.toString());
