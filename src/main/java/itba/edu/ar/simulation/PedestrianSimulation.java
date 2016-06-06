@@ -126,7 +126,7 @@ public class PedestrianSimulation {
 	}
 
 	private boolean evacuated(FloatPoint position) {
-		return position.getY() <= destinationY;
+		return position.getY() <= destinationY - 2.5;
 	}
 
 	private boolean outOfBorders(FloatPoint position) {
@@ -163,12 +163,21 @@ public class PedestrianSimulation {
 	}
 
 	private FloatPoint getDesiredForce(Particle particle) {
-		FloatPoint destination = new FloatPoint(getDestinationX(particle), destinationY);	
+		double dest = getDest(particle);
+		FloatPoint destination = new FloatPoint(getDestinationX(particle), dest);	
 		FloatPoint desiredVersor = destination.minus(particle.getPosition());
 		desiredVersor = desiredVersor.divide(desiredVersor.abs());
 		FloatPoint desiredForce = desiredVersor.multiply(desiredVelocity).minus(particle.getVelocity())
 				.multiply(particle.getMass() / T_CONSTANT);
 		return desiredForce;
+	}
+	
+	private double getDest(Particle particle){
+		double res = destinationY;
+		if(particle.getPosition().getY() <= destinationY){
+			res -= 2.5;
+		}
+		return res;
 	}
 	
 	private double getDestinationX(Particle particle) {
@@ -208,7 +217,12 @@ public class PedestrianSimulation {
 			double overlap = particle.getRadio() - Math.abs(Math.abs(particle.getPosition().multiply(normalVersor))
 					- Math.abs(wall.getPositionOne().multiply(normalVersor)));
 			if (wall.isCollision(particle, overlap)) {
-				FloatPoint force = getForce(normalVersor.multiply(-1), tangencialVersor,
+				if(wall.isCollidingCorner(particle, overlap)){
+					normalVersor = wall.collideCorner(particle);
+					tangencialVersor = normalVersor.rotateRadiants(Math.PI / 2);
+					normalVersor = normalVersor.multiply(-1);
+				}
+				FloatPoint force = getForceWall(normalVersor.multiply(-1), tangencialVersor,
 						particle.getVelocity().multiply(tangencialVersor), overlap);
 				totalForce = totalForce.plus(force);
 			}
@@ -216,6 +230,22 @@ public class PedestrianSimulation {
 		}
 
 		return totalForce;
+	}
+	
+	public FloatPoint getForceWall(FloatPoint normalVersor, FloatPoint tangencialVersor, double relativeVelocity,
+			double overlap) {
+
+		
+		FloatPoint force = new FloatPoint(0, 0);
+	
+		FloatPoint normalForce = normalVersor.multiply(-1 * getConstantNormal() * overlap);
+		FloatPoint tangencialForce = tangencialVersor
+				.multiply(-1 * getConstantTangencial() * overlap * relativeVelocity);
+		force = force.plus(normalForce.plus(tangencialForce));
+		
+
+		return force;
+
 	}
 
 	private double getConstantTangencial() {
