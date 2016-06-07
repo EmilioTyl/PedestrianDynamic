@@ -126,7 +126,7 @@ public class PedestrianSimulation {
 	}
 
 	private boolean evacuated(FloatPoint position) {
-		return position.getY() <= destinationY - 2.5;
+		return position.getY() <= destinationY ;//- 2.5;
 	}
 
 	private boolean outOfBorders(FloatPoint position) {
@@ -174,9 +174,9 @@ public class PedestrianSimulation {
 	
 	private double getDest(Particle particle){
 		double res = destinationY;
-		if(particle.getPosition().getY() <= destinationY){
-			res -= 2.5;
-		}
+		//if(particle.getPosition().getY() <= destinationY){
+		//	res -= 2.5;
+		//}
 		return res;
 	}
 	

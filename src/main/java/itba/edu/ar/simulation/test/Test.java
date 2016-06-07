@@ -15,7 +15,7 @@ public class Test {
 
 	private static final int printAfterNFrames = 200;
 	private static final double length = 25;
-	private static final double[] desiredVelocities = {1};
+	private static final double[] desiredVelocities = {0.8,1,2,3,4,5,6};
 	private static final double width = 20;
 	private static final double destinationY = 5;
 	private static final double destinationDiameter = 1.2;
@@ -24,11 +24,11 @@ public class Test {
 	private static final double deltaTime = Math.pow(10, -3);
 	private static final double finalTime = 300;
 
-	private static final int totalParticles[] = {50};
+	private static final int totalParticles[] = {100, 200, 300};
 	private static final int evaluationFrame = 1000;
-	private static int windowSize = 5000;
+	private static int windowSize = 4000;
 	private static int stepWindow = 500;
-	private static int testQuantity = 1;
+	private static int testQuantity = 5;
 	private static double lowerRadio = 0.25;
 	private static double upperRadio = 0.35;
 
@@ -43,16 +43,16 @@ public class Test {
 	
 					GranularSimulationPositions gsp = new GranularSimulationPositions(path, length, width,
 							printAfterNFrames, tag);
-					//PedestrianEvacuation pe = new PedestrianEvacuation(path, tag, qty, evaluationFrame,
-					//		destinationY,deltaTime);
-					//PedestrianFlow pf = new PedestrianFlow(path, tag, qty, windowSize, destinationY);
-					//PedestrianFlowUsingWindow pfuw = new PedestrianFlowUsingWindow(windowSize, stepWindow, destinationY,
-					//		deltaTime, path, tag);
+					PedestrianEvacuation pe = new PedestrianEvacuation(path, tag, qty, evaluationFrame,
+							destinationY,deltaTime);
+					PedestrianFlow pf = new PedestrianFlow(path, tag, qty, windowSize, destinationY);
+					PedestrianFlowUsingWindow pfuw = new PedestrianFlowUsingWindow(windowSize, stepWindow, destinationY,
+							deltaTime, path, tag);
 	
 					simulation.subscribe(gsp);
-					//simulation.subscribe(pe);
-					//simulation.subscribe(pf);
-					//simulation.subscribe(pfuw);
+					simulation.subscribe(pe);
+					simulation.subscribe(pf);
+					simulation.subscribe(pfuw);
 	
 					Algorithm<FloatPoint> algorithm = new Verlet(deltaTime);
 	
