@@ -24,10 +24,10 @@ public class Test {
 	private static final double deltaTime = Math.pow(10, -3);
 	private static final double finalTime = 300;
 
-	private static final int totalParticles[] = {100, 200, 300};
+	private static final int totalParticles[] = {100};
 	private static final int evaluationFrame = 1000;
 	private static int windowSize = 4000;
-	private static int stepWindow = 500;
+	private static int stepWindow = 250;
 	private static int testQuantity = 5;
 	private static double lowerRadio = 0.25;
 	private static double upperRadio = 0.35;
