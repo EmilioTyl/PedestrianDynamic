@@ -15,7 +15,7 @@ public class Test {
 
 	private static final int printAfterNFrames = 200;
 	private static final double length = 25;
-	private static final double[] desiredVelocities = {0.8,1,2,3,4,5,6};
+	private static final double[] desiredVelocities = {0.8,2,4,6};
 	private static final double width = 20;
 	private static final double destinationY = 5;
 	private static final double destinationDiameter = 1.2;
@@ -26,8 +26,8 @@ public class Test {
 
 	private static final int totalParticles[] = {100};
 	private static final int evaluationFrame = 1000;
-	private static int windowSize = 4000;
-	private static int stepWindow = 250;
+	private static int windowSize = 10000;
+	private static int stepWindow = 1000;
 	private static int testQuantity = 5;
 	private static double lowerRadio = 0.25;
 	private static double upperRadio = 0.35;
@@ -36,6 +36,7 @@ public class Test {
 		for(int qty: totalParticles){
 			for (double desiredVelocity : desiredVelocities) {
 				for (int testNumber = 0; testNumber < testQuantity; testNumber++) {
+					System.out.println("Sim "+ testNumber+" Vel "+desiredVelocity);
 					String tag = "_part_"+qty+"_test_number_" + testNumber + "_desired vel_" + desiredVelocity;
 	
 					PedestrianSimulation simulation = new PedestrianSimulation(length, width, destinationY,
@@ -49,9 +50,9 @@ public class Test {
 					PedestrianFlowUsingWindow pfuw = new PedestrianFlowUsingWindow(windowSize, stepWindow, destinationY,
 							deltaTime, path, tag);
 	
-					simulation.subscribe(gsp);
+					//simulation.subscribe(gsp);
 					simulation.subscribe(pe);
-					simulation.subscribe(pf);
+					//simulation.subscribe(pf);
 					simulation.subscribe(pfuw);
 	
 					Algorithm<FloatPoint> algorithm = new Verlet(deltaTime);

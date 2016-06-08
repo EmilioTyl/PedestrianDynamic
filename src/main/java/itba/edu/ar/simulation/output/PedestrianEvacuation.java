@@ -24,6 +24,7 @@ public class PedestrianEvacuation implements SimulationObserver{
 	private double destinationY;
 	private int total = 0;
 	private double deltaTime = 0;
+	private int lastEvacuated = 0;
 
 	
 	public PedestrianEvacuation(String path, String tag, int totalParticles,int evaluationFrame, double destinationY,double deltaTime) throws IOException {
@@ -58,8 +59,12 @@ public class PedestrianEvacuation implements SimulationObserver{
 		StringBuilder sb = new StringBuilder();
 		int personsInside = personsInsideRoom(particles);
 		evacuated += (previusAmount - personsInside);
-		sb.append(time).append(_SEPARATOR_).append(evacuated);
-		previusAmount = personsInside;
+		if(evacuated != lastEvacuated){
+			sb.append(evacuated).append(_SEPARATOR_).append(time);
+			previusAmount = personsInside;
+			lastEvacuated = evacuated;
+		}
+		
 		
 		fileContent.add(sb.toString());
 		Files.write(Paths.get(path + _FILENAME_+tag+".csv"), fileContent, Charset.forName("UTF-8"),

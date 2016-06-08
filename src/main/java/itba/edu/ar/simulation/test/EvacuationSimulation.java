@@ -34,7 +34,7 @@ public class EvacuationSimulation {
 	private static int timesQuantity = 5; 
 	
 	public static void main(String[] args) throws IOException, InstantiationException, IllegalAccessException {
-		for(int i=0; i< timesQuantity; i++){
+		for(int i=0; i<= timesQuantity; i++){
 			String name = _FILENAME_ + i; 
 			Files.write(Paths.get(path +name+".csv"), new LinkedList<String>(),
 					Charset.forName("UTF-8"), StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
