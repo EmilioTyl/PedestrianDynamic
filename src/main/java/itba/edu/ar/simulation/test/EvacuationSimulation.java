@@ -17,7 +17,7 @@ import itba.edu.ar.ss.algorithm.impl.Verlet;
 public class EvacuationSimulation {
 	private static final int printAfterNFrames = 200;
 	private static final double length = 25 ;
-	private static final double initialDesiredVelocity = 1;
+	private static final double initialDesiredVelocity = 0.5;
 	private static final double deltaVelocity = 1;
 	private static final double finalDesiredVelocity = 6;
 	private static final double width = 20;
